@@ -8,16 +8,10 @@ pipeline {
 
     stages {
 
-        stage('Checkout Code') {
-            steps {
-                git 'https://github.com/Aj066/docker-pipeline.git'
-            }
-        }
-
         stage('Build Docker Image') {
             steps {
                 script {
-                    docker.build("${DOCKER_IMAGE}:${DOCKER_TAG}")
+                    def image = docker.build("${DOCKER_IMAGE}:${DOCKER_TAG}")
                 }
             }
         }
@@ -48,12 +42,6 @@ pipeline {
     post {
         always {
             sh 'docker logout'
-        }
-        success {
-            echo 'Docker image built and pushed successfully 🎉'
-        }
-        failure {
-            echo 'Pipeline failed ❌'
         }
     }
 }
